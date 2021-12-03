@@ -3,33 +3,51 @@ package web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
+
+import org.springframework.web.bind.annotation.*;
+
 import web.model.User;
 import web.service.UserService;
 
-import java.util.Arrays;
-import java.util.List;
 
 @Controller
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
-    @GetMapping(value = "users")
-    public String printWelcome(ModelMap model) {
-        List<User> users = Arrays.asList(new User("Max", "sds", "sds"),
-                new User("Max1", "sds", "sds"),
-                new User("Max2", "sds", "sds"),
-                new User("Max3", "sds", "sds"));
-
-        userService.add(new User("Max", "sds", "sds"));
-        userService.add(new User("Max1", "sds", "sds"));
-        userService.add(new User("Max2", "sds", "sds"));
-        userService.add(new User("Max3", "sds", "sds"));
-
-        model.addAttribute("users", users);
-
+    @RequestMapping(value = {"/", "/users"}, method = RequestMethod.GET)
+    public String printUsers(ModelMap model) {
+        model.addAttribute("users", userService.listUsers());
         return "users";
+    }
+
+    @GetMapping("/user-add")
+    public String addUserForm(User user) {
+        return "user-add";
+    }
+
+    @PostMapping("/user-add")
+    public String addUser(User user) {
+        userService.add(user);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/user-delete/{id}")
+    public String deleteUser(@PathVariable("id") Long id) {
+        userService.delete(id);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/user-update/{id}")
+    public String updateUserForm(@PathVariable("id") Long id, ModelMap model) {
+        model.addAttribute("user", userService.findById(id));
+        return "user-update";
+    }
+
+    @PostMapping("/user-update")
+    public String updateUser(User user) {
+        userService.update(user);
+        return "redirect:/users";
     }
 }

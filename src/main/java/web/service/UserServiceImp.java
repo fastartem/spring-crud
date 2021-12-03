@@ -29,7 +29,12 @@ public class UserServiceImp implements UserService {
         return userDao.listUsers();
     }
 
-    public void delete(int id) {
+    public void delete(Long id) {
         userDao.delete(id);
+    }
+
+    @Override
+    public User findById(Long id) {
+        return userDao.findById(id);
     }
 }

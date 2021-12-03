@@ -1,8 +1,5 @@
 package web.dao;
 
-
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import web.model.User;
 
 import java.util.List;
@@ -14,5 +11,7 @@ public interface UserDao {
 
     List<User> listUsers();
 
-    void delete(int id);
+    void delete(Long id);
+
+    User findById(Long id);
 }

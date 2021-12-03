@@ -21,17 +21,30 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
+    @Transactional
     public void update(User user) {
+        User entity = findById(user.getId());
 
+        entity.setId(user.getId());
+        entity.setFirstName(user.getFirstName());
+        entity.setLastName(user.getLastName());
+        entity.setEmail(user.getEmail());
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<User> listUsers() {
-        return null;
+        return entityManager.createQuery("SELECT u FROM User u").getResultList();
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Long id) {
+        entityManager.createQuery("delete from User u where u.id=:id")
+                .setParameter("id", id).executeUpdate();
+    }
 
+    @Override
+    public User findById(Long id) {
+        return entityManager.find(User.class, id);
     }
 }
