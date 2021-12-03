@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<h1>Cars</h1>
+<table>
+    <tr>
+        <th>No</th>
+        <th>Name</th>
+        <th>LastName</th>
+        <th>Email</th>
+    </tr>
+    <tr th:each="user, state : ${users}">
+        <td th:utext="${state.count}">No</td>
+        <td th:utext="${user.getFirstName()}">Name</td>
+        <td th:utext="${user.getLastName()}">LastName</td>
+        <td th:utext="${user.getEmail()}">Email</td>
+    </tr>
+</table>
+</body>
+</html>
